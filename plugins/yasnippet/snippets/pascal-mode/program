@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: Program 
+# key: prg
+# --
+program ${ProgramName};
+$0
+begin
+	writeln(n);
+end.

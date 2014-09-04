@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: Function 
+# key: func
+# --
+Function ${1:funcname}(${2: variable list}) : ${3:longint};
+begin
+	$0
+end;

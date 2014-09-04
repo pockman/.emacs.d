@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: math unit 
+# key: math
+# --
+uses math;
+$0

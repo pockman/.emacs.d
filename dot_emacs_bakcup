@@ -1,0 +1,152 @@
+(setenv "PATH" 
+(concat   (getenv "PATH") "/opt/local/bin:/opt/local/sbin:/usr/local/bin:/opt/X11/bin:/usr/texbin"))
+
+
+;; bak files
+(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+
+;; ido
+;;; Interactive do, find-file and iswitchb replacement with fuzzy/flex matching.
+
+(ido-mode t)
+(setq ido-enable-flex-matching t) ; fuzzy matching is a must have
+(setq ido-enable-last-directory-history nil) ; forget latest selected directory names
+
+;; orgmode
+
+(setq load-path (cons "~/.emacs.d/org/lisp" load-path))
+(setq load-path (cons "~/.emacs.d/org/contrib/lisp" load-path))
+
+;; The following lines are always needed.  Choose your own keys.
+(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+
+;; ---------------------------------------------------------------------------
+;;  cdlatex dir 
+(add-to-list 'load-path
+              "~/.emacs.d/plugins")
+;;  yasnippet installation 
+
+(add-to-list 'load-path
+              "~/.emacs.d/plugins/yasnippet")
+(require 'yasnippet)
+(yas-global-mode 1)
+
+(add-to-list 'load-path
+              "~/.emacs.d/ess/lisp")
+(require 'ess-site)
+
+;; free pascal mode 
+(load "freepascal")
+(add-to-list 'auto-mode-alist '("\\.pp\\'" . freepascal-mode))
+;; ---------------------------------------------------------------------------
+
+(add-to-list 'load-path
+              "~/.emacs.d/evil/lib")
+
+(add-to-list 'load-path
+              "~/.emacs.d/evil")
+(require 'evil)
+(evil-mode 1)
+
+
+;; ---------------------------------------------------------------------------
+;; some modes that evil goes away
+
+(add-to-list 'evil-emacs-state-modes 'org-mode) 
+
+
+;; ---------------------------------------------------------------------------
+
+(require 'ox-latex)
+(setq org-export-latex-listings t)
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(current-language-environment "UTF-8")
+ '(global-linum-mode t)
+ '(initial-scratch-message nil)
+ '(latex-run-command "/usr/texbin/latex")
+ '(org-agenda-files (quote ("~/Desktop/Organize/MyOrg.org")))
+ '(org-export-backends (quote (ascii beamer html icalendar latex md odt deck s5)))
+ '(org-latex-classes (quote (
+			     
+			     ("beamer" "\\documentclass[presentation]{beamer}
+                               \\usepackage{ctex}"
+			      ("\\section{%s}" . "\\section*{%s}")
+			      ("\\subsection{%s}" . "\\subsection*{%s}")
+			      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+			     ("ctexart" "\\documentclass[11pt]{ctexart}"
+			      ("\\section{%s}" . "\\section*{%s}")
+			      ("\\subsection{%s}" . "\\subsection*{%s}")
+			      ("\\subsubsection{%s}" . "\\subsubsection*{%s}") 
+			      ("\\paragraph{%s}" . "\\paragraph*{%s}") 
+			      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+			     ("article" "\\documentclass[11pt]{article}" 
+			      ("\\section{%s}" . "\\section*{%s}")
+			      ("\\subsection{%s}" . "\\subsection*{%s}") 
+			      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+			      ("\\paragraph{%s}" . "\\paragraph*{%s}")
+			      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+			     ("ctexrep" "\\documentclass[11pt]{ctexrep}" 
+			      ("\\part{%s}" . "\\part*{%s}")
+			      ("\\chapter{%s}" . "\\chapter*{%s}") 
+			      ("\\section{%s}" . "\\section*{%s}")
+			      ("\\subsection{%s}" . "\\subsection*{%s}")
+			      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+			     ("report" "\\documentclass[11pt]{report}" 
+			      ("\\part{%s}" . "\\part*{%s}") 
+			      ("\\chapter{%s}" . "\\chapter*{%s}") 
+			      ("\\section{%s}" . "\\section*{%s}")
+			      ("\\subsection{%s}" . "\\subsection*{%s}") 
+			      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+			     ("ctexbook" "\\documentclass[11pt]{ctexbook}"
+			      ("\\part{%s}" . "\\part*{%s}")
+			      ("\\chapter{%s}" . "\\chapter*{%s}")
+			      ("\\section{%s}" . "\\section*{%s}")
+			      ("\\subsection{%s}" . "\\subsection*{%s}")
+			      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+			     ("book" "\\documentclass[11pt]{book}"
+			      ("\\part{%s}" . "\\part*{%s}")
+			      ("\\chapter{%s}" . "\\chapter*{%s}")
+			      ("\\section{%s}" . "\\section*{%s}") 
+			      ("\\subsection{%s}" . "\\subsection*{%s}")
+			      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))))
+
+ '(org-latex-pdf-process (quote ("latexmk -g -8bit -shell-escape -interaction=nonstopmode -xelatex %f")))
+ '(show-paren-mode t)
+ '(visual-line-mode nil t))
+
+
+(setq org-plantuml-jar-path
+      (expand-file-name "~/.emacs.d/org/contrib/scripts/plantuml.jar"))
+
+(setq org-latex-listings 'minted)
+(add-to-list 'org-latex-packages-alist '("" "xcolor"))
+(add-to-list 'org-latex-packages-alist '("" "minted"))
+(add-to-list 'org-latex-packages-alist '("" "epstopdf"))
+(setq exec-path (append exec-path '("/usr/texbin")))
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+(add-hook 'org-mode-hook 'turn-on-org-cdlatex)
+(org-babel-do-load-languages
+   'org-babel-load-languages
+   '((latex . t)(sh . t)(python . t)(R . t) (plantuml . t) (ditaa . t))) ; this line activates ditaa
+
+;; recent file enabled
+(recentf-mode 1)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'smex) ; Not needed if you use package.el
+(smex-initialize) ; Can be omitted. This might cause a (minimal) delay
+                  ; when Smex is auto-initialized on its first run.
+		  ;
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;; This is your old M-x.
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+;; (setenv "ERGOEMACS_KEYBOARD_LAYOUT" "us") ; US
+;; (load-file "~/.emacs.d/ergoemacs/site-lisp/site-start.el")
